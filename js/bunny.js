@@ -17,7 +17,7 @@ $(document).ready(function () {
         { imgName: "bell1.png", dataNumber: 2 },
         { imgName: "bell1.png", dataNumber: 2 },
         { imgName: "bell2.png", dataNumber: 3 },
-        { imgName: "bell2.png", dataNumber: 4 },
+        { imgName: "bell2.png", dataNumber: 3 },
         { imgName: "bell3.png", dataNumber: 4 },
         { imgName: "bell3.png", dataNumber: 4 },
         { imgName: "christmastree.png", dataNumber: 5 },
