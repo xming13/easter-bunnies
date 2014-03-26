@@ -3,7 +3,7 @@ $(document).ready(function () {
     var cardHtmlTemplate = '<li class="flip-container" data-number="$dataNumber">';
     cardHtmlTemplate += '       <div class="flipper">';
     cardHtmlTemplate += '       <div class="front">';
-    cardHtmlTemplate += '           <img src="images/cat.jpg"/>';
+    cardHtmlTemplate += '           <img src="images/back.png"/>';
     cardHtmlTemplate += '        </div>';
     cardHtmlTemplate += '        <div class="back">';
     cardHtmlTemplate += '            <img src="images/$imgName" />';
@@ -12,8 +12,8 @@ $(document).ready(function () {
     cardHtmlTemplate += '</li>';
 
     var imgObjList = [
-        { imgName: "bell.png", dataNumber: 1 },
-        { imgName: "bell.png", dataNumber: 1 },
+        { imgName: "bunny.png", dataNumber: 1 },
+        { imgName: "egg.png", dataNumber: 1 },
         { imgName: "bell1.png", dataNumber: 2 },
         { imgName: "bell1.png", dataNumber: 2 },
         { imgName: "bell2.png", dataNumber: 3 },
