@@ -63,7 +63,15 @@ GameManager = {
         '   </div>' +
         '</li>',
     IsAnimating: false,
-    Init: function () {
+    GameStateEnum: {
+      GAME_NOT_STARTED: 0,
+      GAME_IN_PROGRESS: 1,
+      GAME_IS_FINISHED: 2
+    },
+    GameState: 0,
+    Init: function() {
+        $(".panel-main").hide();
+        $(".panel-game").show();
         var imgObjList = this.ImageObjectList.shuffle();
         var cardContainer = $("ul.cbp-rfgrid");
         for (var i = 0; i < imgObjList.length; i++) {
@@ -83,6 +91,7 @@ GameManager = {
         var $cardClicked = $(cardClicked);
 
         if (!$cardClicked.hasClass("reveal") && !this.IsAnimating) {
+            this.UpdateGameState();
             if (cardOpened) {
                 if (cardOpened == cardClicked) {
 
@@ -91,11 +100,8 @@ GameManager = {
                     if ($cardOpened.data("number") == $cardClicked.data("number")) {
                         this.FlipCard($cardClicked);
                         $cardOpened.removeClass('open').addClass('reveal');
-                        $cardClicked.removeClass('open').addClass('reveal')
-
-                        if (this.IsGameFinished()) {
-                            this.ShowGameFinish();
-                        }
+                        $cardClicked.removeClass('open').addClass('reveal');
+                        this.UpdateGameState();
                     }
                     else {
                         this.FlipCard($cardClicked);
@@ -117,7 +123,7 @@ GameManager = {
             }
         }
     },
-    FlipCard: function (card) {
+    FlipCard: function(card) {
         var cardSideShow, cardSideHide;
 
         if ($(card).hasClass('open')) {
@@ -145,8 +151,14 @@ GameManager = {
             "transform": "rotateY(180deg) 0.5s"
         });
     },
-    IsGameFinished: function() {
-        return $(".cbp-rfgrid li").length == $(".cbp-rfgrid li.reveal").length;
+    UpdateGameState: function() {
+        if (this.GameState == this.GameStateEnum.GAME_NOT_STARTED) {
+            this.GameState = this.GameStateEnum.GAME_IN_PROGRESS;
+        }
+        if  ($(".cbp-rfgrid li").length == $(".cbp-rfgrid li.reveal").length) {
+            this.GameState = this.GameStateEnum.GAME_IS_FINISHED;
+            this.ShowGameFinish();
+        }
     },
     ShowGameFinish: function() {
         console.log("Game Over!");
@@ -166,6 +178,8 @@ Array.prototype.shuffle = function () {
 }
 
 $(document).ready(function () {
-    GameManager.Init();
+    $(".btn-play").click(function() {
+        GameManager.Init();
+    });
 });
 

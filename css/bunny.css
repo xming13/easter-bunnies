@@ -38,7 +38,6 @@
     transition: 0.6s;
     transform-style: preserve-3d;
 
-
     /*position: absolute;*/
     /*top: 0;*/
     /*left: 0;*/
@@ -72,11 +71,9 @@
     /*transform: rotateY(180deg);*/
 }
 
-
 .front {
     z-index: 2;
 }
-
 
 /* override */
 .cbp-rfgrid li img {
@@ -87,4 +84,101 @@
 
 .cbp-rfgrid li img {
     max-width: 100%;
+}
+
+/* menu styling */
+body {
+    background: #FF8686;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.container > header {
+    width: 100%;
+    margin: auto;
+}
+
+.menu {
+    background: #FA5563;
+    border-radius: 10px;
+    margin: 0 auto;
+    /*min-width: 600px;*/
+    /*min-height: 634px;*/
+}
+
+.panel-container {
+    padding: 5% 5%;
+    text-align: center;
+}
+
+.panel-main {
+    min-height: 460px;
+}
+
+.panel-game {
+
+}
+
+.title {
+    font-size: 48px;
+    margin: 0 0 16px;
+    letter-spacing: 3px;
+}
+
+.subtitle {
+    font-size: 21px;
+    margin: 0 0 24px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.sprite {
+    min-height: 260px;
+}
+
+.sprite img {
+    margin: 30px 0;
+}
+
+.btn-play {
+    display: inline-block;
+    padding: 10px 70px;
+    font-size: 15px;
+    font-weight: normal;
+    text-align: center;
+    color: #fff;
+    background-color: #FF2447;
+    border: 1px solid #E01C34;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-play:hover {
+    color: #fff;
+    background-color: rgb(255, 19, 57);
+    border-color: #F30E2A;
+    outline: 0px none;
+}
+
+.cbp-rfgrid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    width: 100%;
+    left: auto;
+    background: #00FFFF;
+}
+
+@media screen and (max-width: 400px) {
+    .container {
+        width: 100%;
+    }
 }

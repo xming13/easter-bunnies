@@ -4,11 +4,11 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Game</title>
+    <title>Easter Bunnies</title>
     <meta name="description" content="Blueprint: Responsive Full Width Grid Layout"/>
     <meta name="keywords"
           content="100% grid, layout, columns, images, thumbnails, responsive, full width grid, image grid, css, jquery"/>
-    <meta name="author" content="Codrops"/>
+    <meta name="author" content="xming13"/>
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" type="text/css" href="css/default.css"/>
     <link rel="stylesheet" type="text/css" href="css/component.css"/>
@@ -27,8 +27,30 @@
                 drop icon</a>
         </nav>
     </header>
-    <ul class="cbp-rfgrid">
-    </ul>
+    <div class="menu">
+        <div class="panel-container">
+            <div class="panel-main">
+                <div class="title">Easter Bunnies</div>
+                <div class="subtitle">Find Matching Bunnies and Eggs</div>
+                <div class="sprite">
+                    <img src="images/bunny.png"/>
+                    <img src="images/egg.png"/>
+                </div>
+                <div class="button-holder">
+                    <a class="btn-play">PLAY</a>
+                </div>
+                <div class="sublinks">
+                    <a class="link-instructions">INSTRUCTIONS</a>
+                    <a class="link-about">ABOUT</a>
+                    <a class="link-credits">CREDITS</a>
+                </div>
+            </div>
+            <div class="panel-game" style="display:none;">
+                <ul class="cbp-rfgrid clearfix">
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="js/jquery-1.11.0.min.js"></script>
