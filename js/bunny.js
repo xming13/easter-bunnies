@@ -1,17 +1,7 @@
-$(document).ready(function () {
+var GameManager = GameManager || {};
 
-    var cardHtmlTemplate = '<li class="flip-container" data-number="$dataNumber">';
-    cardHtmlTemplate += '       <div class="flipper">';
-    cardHtmlTemplate += '       <div class="front">';
-    cardHtmlTemplate += '           <img src="images/back.png"/>';
-    cardHtmlTemplate += '        </div>';
-    cardHtmlTemplate += '        <div class="back">';
-    cardHtmlTemplate += '            <img src="images/$imgName" />';
-    cardHtmlTemplate += '        </div>';
-    cardHtmlTemplate += '    </div>';
-    cardHtmlTemplate += '</li>';
-
-    var imgObjList = [
+GameManager = {
+    ImageObjectList: [
         { imgName: "bunny.png", dataNumber: 1 },
         { imgName: "egg.png", dataNumber: 1 },
         { imgName: "bell1.png", dataNumber: 2 },
@@ -60,57 +50,74 @@ $(document).ready(function () {
         { imgName: "pattern9.jpg", dataNumber: 23 },
         { imgName: "pattern10.jpg", dataNumber: 24 },
         { imgName: "pattern10.jpg", dataNumber: 24 }
-    ];
-    imgObjList.shuffle();
+    ],
+    CardHtmlTemplate:
+        '<li class="flip-container" data-number="$dataNumber">' +
+        '   <div class="flipper">' +
+        '       <div class="front">' +
+        '           <img src="images/back.png"/>' +
+        '       </div>' +
+        '       <div class="back">' +
+        '           <img src="images/$imgName" />' +
+        '       </div>' +
+        '   </div>' +
+        '</li>',
+    IsAnimating: false,
+    Init: function () {
+        var imgObjList = this.ImageObjectList.shuffle();
+        var cardContainer = $("ul.cbp-rfgrid");
+        for (var i = 0; i < imgObjList.length; i++) {
+            var imgObj = imgObjList[i];
+            cardContainer.append(this.CardHtmlTemplate.replace("$dataNumber", imgObj.dataNumber).replace("$imgName", imgObj.imgName));
+        }
 
-    var cardContainer = $("ul.cbp-rfgrid");
-    for (var i = 0; i < imgObjList.length; i++) {
-        var imgObj = imgObjList[i];
-        cardContainer.append(cardHtmlTemplate.replace("$dataNumber", imgObj.dataNumber).replace("$imgName", imgObj.imgName));
-    }
-
-    var waitingAnimation = false;
-    $(".cbp-rfgrid li").click(function () {
-
+        $("ul.cbp-rfgrid li").click(function () {
+            GameManager.ClickCard(this);
+        });
+    },
+    ClickCard: function(card) {
         var cardOpened = $(".cbp-rfgrid li.open")[0];
-        var cardClicked = $(this)[0];
+        var cardClicked = $(card)[0];
 
         var $cardOpened = $(cardOpened);
         var $cardClicked = $(cardClicked);
 
-        if (!$cardClicked.hasClass("reveal") && !waitingAnimation) {
+        if (!$cardClicked.hasClass("reveal") && !this.IsAnimating) {
             if (cardOpened) {
                 if (cardOpened == cardClicked) {
 
                 }
                 else {
                     if ($cardOpened.data("number") == $cardClicked.data("number")) {
-                        flipCard($cardClicked);
+                        this.FlipCard($cardClicked);
                         $cardOpened.removeClass('open').addClass('reveal');
-                        $cardClicked.removeClass('open').addClass('reveal');
+                        $cardClicked.removeClass('open').addClass('reveal')
+
+                        if (this.IsGameFinished()) {
+                            this.ShowGameFinish();
+                        }
                     }
                     else {
-                        flipCard($cardClicked);
+                        this.FlipCard($cardClicked);
                         $cardClicked.addClass('open');
-                        waitingAnimation = true;
+                        this.IsAnimating = true;
                         setTimeout(function () {
-                            flipCard($cardClicked);
-                            flipCard($cardOpened);
+                            GameManager.FlipCard($cardClicked);
+                            GameManager.FlipCard($cardOpened);
                             $cardClicked.removeClass('open');
                             $cardOpened.removeClass('open');
-                            waitingAnimation = false;
+                            GameManager.IsAnimating = false;
                         }, 500);
                     }
                 }
             }
             else {
-                flipCard($cardClicked);
+                this.FlipCard($cardClicked);
                 $cardClicked.addClass('open');
             }
         }
-    });
-
-    function flipCard(card) {
+    },
+    FlipCard: function (card) {
         var cardSideShow, cardSideHide;
 
         if ($(card).hasClass('open')) {
@@ -137,8 +144,14 @@ $(document).ready(function () {
             "-ms-transform": "rotateY(180deg) 0.5s",
             "transform": "rotateY(180deg) 0.5s"
         });
+    },
+    IsGameFinished: function() {
+        return $(".cbp-rfgrid li").length == $(".cbp-rfgrid li.reveal").length;
+    },
+    ShowGameFinish: function() {
+        console.log("Game Over!");
     }
-});
+};
 
 Array.prototype.shuffle = function () {
     var i = this.length, j, temp;
@@ -151,3 +164,8 @@ Array.prototype.shuffle = function () {
     }
     return this;
 }
+
+$(document).ready(function () {
+    GameManager.Init();
+});
+
