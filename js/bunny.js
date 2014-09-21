@@ -1,3 +1,7 @@
+
+
+
+
 var GameManager = GameManager || {};
 
 GameManager = {
@@ -84,13 +88,20 @@ GameManager = {
     gameState: 0,
     numClick: 0,
     init: function() {
+        // preload images
+        for (var i = 0; i < this.imageObjectList.length; i++) {
+            var image = new Image();
+            image.src = 'images/' + this.imageObjectList[i].imgName;
+        }
+    },
+    startGame: function() {
         $(".panel-main").hide();
         $(".panel-game").show();
         $('html, body').animate({
             scrollTop: $("#panel-container").offset().top
         }, 'fast');
 
-        numClick = 0;
+        this.numClick = 0;
 
         var imgObjList = this.imageObjectList.shuffle();
         var cardContainer = $("ul.cbp-rfgrid");
@@ -121,7 +132,7 @@ GameManager = {
                 if (cardOpened == cardClicked) {
                     // do nothing
                 } else {
-                    numClick++;
+                    this.numClick++;
                     if ($cardOpened.data("number") == $cardClicked.data("number")) {
                         this.flipCard($cardClicked);
                         $cardOpened.removeClass('open').addClass('reveal');
@@ -186,9 +197,9 @@ GameManager = {
         }
     },
     showGameFinish: function() {
-        var replay = confirm('Congratulations!\r\rYou took ' + numClick + ' clicks to match all the bunnies and eggs!\r\rPlay again?');
+        var replay = confirm('Congratulations!\r\rYou took ' + this.numClick + ' clicks to match all the bunnies and eggs!\r\rPlay again?');
         if (replay) {
-            this.init();
+            this.startGame();
         }
     }
 };
@@ -207,7 +218,8 @@ Array.prototype.shuffle = function() {
 }
 
 $(document).ready(function() {
+    GameManager.init();
     $(".btn-play").click(function() {
-        GameManager.init();
+        GameManager.startGame();
     });
 });
