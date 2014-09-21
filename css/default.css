@@ -49,17 +49,16 @@ a:hover {
 	color: #000;
 }
 
-.main,
-.container > header {
-	/*width: 90%;*/
-	/*max-width: 69em;*/
+.main {
     width: 80%;
 	margin: 0 auto;
 	padding: 0 1.875em 3.125em 1.875em;
 }
 
 .container > header {
-	padding: 2.875em 1.875em 1.875em;
+    width: 80%;
+    margin: 0 auto;
+	padding: 46px 30px 30px;
 }
 
 .container > header h1 {
@@ -92,13 +91,13 @@ a:hover {
 	border-radius: 50%;
 	color: transparent;
 	margin: 0 0.1em;
-	border: 4px solid #47a3da;
+	border: 4px solid #104AC5;
 	text-indent: -8000px;
 }
 
 .container > header nav a:after {
 	content: attr(data-info);
-	color: #47a3da;
+	color: #001292;
 	position: absolute;
 	width: 600%;
 	top: 120%;
@@ -113,11 +112,14 @@ a:hover {
 }
 
 .container > header nav a:hover {
-	background: #47a3da;
+	background: #54BFFF;
+}
+.container > header nav a:hover:before {
+    color: #fff;
 }
 
-.icon-drop:before, 
-.icon-arrow-left:before {
+.icon-home:before,
+.icon-github:before {
 	font-family: 'fontawesome';
 	position: absolute;
 	top: 0;
@@ -134,15 +136,11 @@ a:hover {
 	padding-left: 8px;
 }
 
-.container > header nav a:hover:before {
-	color: #fff;
+.icon-home:before {
+	content: "\f015";
 }
 
-.icon-drop:before {
-	content: "\e000";
-}
-
-.icon-arrow-left:before {
-	content: "\f060";
+.icon-github:before {
+	content: "\f113";
 }
 

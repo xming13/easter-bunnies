@@ -4,48 +4,57 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easter Bunnies</title>
-    <meta name="description" content="Blueprint: Responsive Full Width Grid Layout"/>
+    <title>
+        Easter Bunnies
+    </title>
+    <meta name="description" content="Easter Bunny Game"/>
     <meta name="keywords"
-          content="100% grid, layout, columns, images, thumbnails, responsive, full width grid, image grid, css, jquery"/>
+          content="100% grid, layout, columns, images, thumbnails, responsive, full width grid, image grid, css, jquery, easter, bunny, bunnies, egg, eggs, game"/>
     <meta name="author" content="xming13"/>
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" type="text/css" href="css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="css/component.css"/>
     <link rel="stylesheet" type="text/css" href="css/bunny.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
 </head>
 <body>
 <div class="container">
     <header class="clearfix">
-        <span>Enjoy</span>
+        <span>
+          Enjoy
+      </span>
 
-        <h1>Easter Bunnies and Eggs</h1>
+        <h1>
+            Easter Bunnies and Eggs
+        </h1>
         <nav>
-            <a href="#" class="icon-arrow-left" data-info="this is a arrow left icon">
-                arrow left icon</a>
-            <a href="#" class="icon-drop" data-info="this is a drop icon">
-                drop icon</a>
+            <a href="/" class="icon-home" data-info="Home">
+                Home
+            </a>
+            <a href="https://github.com/xming13/easter-bunnies" target="_blank" class="icon-github" data-info="Github">
+                Github
+            </a>
         </nav>
     </header>
     <div class="menu">
-        <div class="panel-container">
+        <div class="panel-container" id="panel-container" name="panel-container">
             <div class="panel-main">
-                <div class="title">Easter Bunnies</div>
-                <div class="subtitle">Find Matching Bunnies and Eggs</div>
+                <div class="title">
+                    Match
+                </div>
+                <div class="subtitle">
+                    Bunnies and Eggs
+                </div>
                 <div class="sprite">
-                    <img src="images/bunny.png"/>
-                    <img src="images/egg.png"/>
+                    <img src="images/base-bunny.png"/>
+                    <img src="images/base-egg.png"/>
                 </div>
                 <div class="button-holder">
-                    <a class="btn-play">PLAY</a>
-                </div>
-                <div class="sublinks">
-                    <a class="link-instructions">INSTRUCTIONS</a>
-                    <a class="link-about">ABOUT</a>
-                    <a class="link-credits">CREDITS</a>
+                    <a class="btn-play">
+                        PLAY
+                    </a>
                 </div>
             </div>
-            <div class="panel-game" style="display:none;">
+            <div class="panel-game">
                 <ul class="cbp-rfgrid clearfix">
                 </ul>
             </div>
@@ -53,9 +62,31 @@
     </div>
 </div>
 
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/jquery.transit.min.js"></script>
-<script src="js/modernizr.custom.js"></script>
-<script src="js/bunny.js"></script>
+<script src="js/jquery-1.11.0.min.js">
+</script>
+<script src="js/jquery.transit.min.js">
+</script>
+<script src="js/bunny.js">
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){
+        i['GoogleAnalyticsObject']=r;
+        i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)}
+                ,i[r].l=1*new Date();
+        a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];
+        a.async=1;
+        a.src=g;
+        m.parentNode.insertBefore(a,m)
+    }
+            )(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53662868-2', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
 </body>
 </html>
