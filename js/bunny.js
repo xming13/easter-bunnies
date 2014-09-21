@@ -154,6 +154,7 @@ GameManager = {
                     }
                 }
             } else {
+                this.numClick++;
                 this.flipCard($cardClicked);
                 $cardClicked.addClass('open');
             }
