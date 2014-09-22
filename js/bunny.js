@@ -89,8 +89,10 @@ GameManager = {
     numClick: 0,
     init: function() {
         // preload images
+        var image = new Image();
+        image.src = 'images/back.png';
         for (var i = 0; i < this.imageObjectList.length; i++) {
-            var image = new Image();
+            image = new Image();
             image.src = 'images/' + this.imageObjectList[i].imgName;
         }
     },
@@ -136,10 +138,8 @@ GameManager = {
                     if ($cardOpened.data("number") == $cardClicked.data("number")) {
                         this.flipCard($cardClicked);
                         $cardOpened.removeClass('open').addClass('reveal');
-//                        $cardOpened.css('border', '5px solid #00ffff');
                         $($cardOpened.find('.back')[0]).css('border', '5px solid #00ffff');
                         $cardClicked.removeClass('open').addClass('reveal');
-//                        $cardClicked.css('border', '5px solid #00ffff');
                         $($cardClicked.find('.back')[0]).css('border', '5px solid #00ffff');
                         this.UpdateGameState();
                     } else {
@@ -171,7 +171,6 @@ GameManager = {
         } else {
             cardSideShow = $(card).find('.back')[0];
             cardSideHide = $(card).find('.front')[0];
-//            $(card).css('border', '5px solid #0099cc');
             $(cardSideShow).css('border', '5px solid #0099cc');
         }
 
