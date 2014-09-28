@@ -1,7 +1,3 @@
-
-
-
-
 var GameManager = GameManager || {};
 
 GameManager = {
