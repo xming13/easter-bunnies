@@ -196,10 +196,18 @@ GameManager = {
         }
     },
     showGameFinish: function() {
-        var replay = confirm('Congratulations!\r\rYou took ' + this.numClick + ' clicks to match all the bunnies and eggs!\r\rPlay again?');
-        if (replay) {
-            this.startGame();
-        }
+        var self = this;
+        var text = "You took " + this.numClick + " clicks to match all the bunnies and eggs!";
+        swal({
+            title: "Congratulations!",
+            text: text,
+            showCancelButton: true,
+            confirmButtonText: "Play again",
+            cancelButtonText: "cancel",
+            imageUrl: "images/base-bunny.png"
+        }, function(){
+            self.startGame();
+        });
     }
 };
 
