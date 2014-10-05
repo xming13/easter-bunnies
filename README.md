@@ -5,3 +5,7 @@ The objective of the game is to match all the bunnies and eggs with as few click
 
 ## Credits
 The game layout uses  [responsive full width grid](http://tympanus.net/Blueprints/ResponsiveFullWidthGrid/) (with modification) from [Codrops](http://tympanus.net/codrops/).
+
+- jquery.transit.js
+- sweet-alert.js/css
+- font-awesome.css
