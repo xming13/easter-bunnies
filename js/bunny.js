@@ -225,6 +225,8 @@ Array.prototype.shuffle = function() {
 }
 
 $(document).ready(function() {
+    FastClick.attach(document.body);
+
     GameManager.init();
     $(".btn-play").click(function() {
         GameManager.startGame();
