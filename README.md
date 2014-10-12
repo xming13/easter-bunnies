@@ -9,5 +9,6 @@ The game layout uses  [responsive full width grid](http://tympanus.net/Blueprint
 Also thanks to all the awesome js/css
 - [jquery.js](https://github.com/jquery/jquery)
 - [jquery.transit.js](https://github.com/rstacruz/jquery.transit)
+- [fastclick.js](https://github.com/ftlabs/fastclick)
 - [sweet-alert.js/css](https://github.com/t4t5/sweetalert)
 - [font-awesome.css](https://github.com/FortAwesome/Font-Awesome)
