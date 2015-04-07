@@ -350,6 +350,10 @@ body {
     margin-bottom: 15px;
 }
 
+.icon-back-holder .icon-back {
+    position: absolute;
+}
+
 .heading {
     color: #1A00FF;
     font-size: 30px;

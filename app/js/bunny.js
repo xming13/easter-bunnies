@@ -224,39 +224,39 @@ XMing.GameStateManager = {
                 text: "Write your name here! It will appear in the leaderboard!",
                 closeOnConfirm: false
             }, function(playerName) {
-                if (playerName === "") {
+                if (playerName == "") {
                     swal.showInputError("You need to write something! A nickname is fine too!");
                     return false;
-                }
-
-                $.ajax({
-                    method: "POST",
-                    url: 'http://weiseng.redairship.com/leaderboard/api/1/highscore.json',
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        game_id: 2,
-                        username: playerName,
-                        score: self.numClick
-                    })
-                }).success(function(data) {
-                    swal({
-                        title: "Congratulations!",
-                        text: "You are currently ranked " + data.rank_text + "!",
-                        type: "success",
-                        showCancelButton: true,
-                        confirmButtonText: "Play again",
-                        cancelButtonText: "Back to home"
-                    }, function(isConfirm) {
-                        if (isConfirm) {
-                            self.startGame();
-                        } else {
-                            $(".panel-game").hide();
-                            $(".panel-main").show();
-                        }
+                } else {
+                    $.ajax({
+                        method: "POST",
+                        url: 'http://weiseng.redairship.com/leaderboard/api/1/highscore.json',
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            game_id: 2,
+                            username: playerName,
+                            score: self.numClick
+                        })
+                    }).success(function(data) {
+                        swal({
+                            title: "Congratulations!",
+                            text: "You are currently ranked " + data.rank_text + "!",
+                            type: "success",
+                            showCancelButton: true,
+                            confirmButtonText: "Play again",
+                            cancelButtonText: "Back to home"
+                        }, function(isConfirm) {
+                            if (isConfirm) {
+                                self.startGame();
+                            } else {
+                                $(".panel-game").hide();
+                                $(".panel-main").show();
+                            }
+                        });
+                    }).fail(function() {
+                        swal("Oops...", "Something went wrong!", "error");
                     });
-                }).fail(function() {
-                    swal("Oops...", "Something went wrong!", "error");
-                });
+                }
             });
         });
     },
