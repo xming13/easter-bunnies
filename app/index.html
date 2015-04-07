@@ -12,7 +12,10 @@
           content="100% grid, layout, columns, images, thumbnails, responsive, full width grid, image grid, css, jquery, easter, bunny, bunnies, egg, eggs, game"/>
     <meta name="author" content="xming13"/>
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="css/app.css">
+    <!-- build:css css/app.css -->
+    <link rel="stylesheet" type="text/css" href="../node_modules/sweetalert/lib/sweet-alert.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bunny.css"/>
+    <!-- endbuild -->
     <link rel="stylesheet" type="text/css"
           href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="//xming13.github.io/games/css/xming-games.min.css"/>
@@ -84,7 +87,13 @@
     </div>
 </div>
 
-<script src="js/app.js"></script>
+<!-- build:js js/app.js -->
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/jquery.transit/jquery.transit.js"></script>
+<script src="../node_modules/fastclick/lib/fastclick.js"></script>
+<script src="../node_modules/sweetalert/lib/sweet-alert.min.js"></script>
+<script src="js/bunny.js"></script>
+<!-- endbuild -->
 <script src="http://xming13.github.io/games/js/xming-games.min.js"></script>
 
 </body>

@@ -1,6 +1,6 @@
-var GameManager = GameManager || {};
+var XMing = XMing || {};
 
-GameManager = {
+XMing.GameStateManager = {
     imageObjectList: [{
         imgName: "white-bunny.png",
         dataNumber: 1
@@ -84,6 +84,13 @@ GameManager = {
     gameState: 0,
     numClick: 0,
     init: function() {
+        var self = this;
+        FastClick.attach(document.body);
+
+        $(".btn-play").click(function() {
+            self.startGame();
+        });
+
         // preload images
         var image = new Image();
         image.src = 'images/back.png';
@@ -93,11 +100,10 @@ GameManager = {
         }
     },
     startGame: function() {
+        var self = this;
+
         $(".panel-main").hide();
         $(".panel-game").show();
-        $('html, body').animate({
-            scrollTop: $("#panel-container").offset().top
-        }, 'fast');
 
         this.numClick = 0;
 
@@ -108,16 +114,22 @@ GameManager = {
             var imgObj = imgObjList[i];
             cardContainer.append(
                 this.cardHtmlTemplate
-                    .replace("$dataNumber", imgObj.dataNumber)
-                    .replace("$imgName", imgObj.imgName)
+                .replace("$dataNumber", imgObj.dataNumber)
+                .replace("$imgName", imgObj.imgName)
             );
         }
 
         $("ul.cbp-rfgrid li").click(function() {
-            GameManager.clickCard(this);
+            self.clickCard(this);
         });
+
+        $('html, body').animate({
+            scrollTop: $("#panel-container").offset().top
+        }, 'fast');
     },
     clickCard: function(card) {
+        var self = this;
+
         var cardOpened = $(".cbp-rfgrid li.open")[0];
         var cardClicked = $(card)[0];
 
@@ -125,11 +137,9 @@ GameManager = {
         var $cardClicked = $(cardClicked);
 
         if (!$cardClicked.hasClass("reveal") && !this.isAnimating) {
-            this.UpdateGameState();
+            this.updateGameState();
             if (cardOpened) {
-                if (cardOpened == cardClicked) {
-                    // do nothing
-                } else {
+                if (cardOpened != cardClicked) {
                     this.numClick++;
                     if ($cardOpened.data("number") == $cardClicked.data("number")) {
                         this.flipCard($cardClicked);
@@ -137,17 +147,17 @@ GameManager = {
                         $($cardOpened.find('.back')[0]).css('border', '5px solid #00ffff');
                         $cardClicked.removeClass('open').addClass('reveal');
                         $($cardClicked.find('.back')[0]).css('border', '5px solid #00ffff');
-                        this.UpdateGameState();
+                        this.updateGameState();
                     } else {
                         this.flipCard($cardClicked);
                         $cardClicked.addClass('open');
                         this.isAnimating = true;
                         setTimeout(function() {
-                            GameManager.flipCard($cardClicked);
-                            GameManager.flipCard($cardOpened);
+                            self.flipCard($cardClicked);
+                            self.flipCard($cardOpened);
                             $cardClicked.removeClass('open');
                             $cardOpened.removeClass('open');
-                            GameManager.isAnimating = false;
+                            self.isAnimating = false;
                         }, 500);
                     }
                 }
@@ -186,7 +196,7 @@ GameManager = {
             "transform": "rotateY(180deg) 0.5s"
         });
     },
-    UpdateGameState: function() {
+    updateGameState: function() {
         if (this.gameState == this.gameStateEnum.GAME_NOT_STARTED) {
             this.gameState = this.gameStateEnum.GAME_IN_PROGRESS;
         }
@@ -205,7 +215,7 @@ GameManager = {
             confirmButtonText: "Play again",
             cancelButtonText: "cancel",
             imageUrl: "images/base-bunny.png"
-        }, function(){
+        }, function() {
             self.startGame();
         });
     }
@@ -224,11 +234,6 @@ Array.prototype.shuffle = function() {
     return this;
 }
 
-$(document).ready(function() {
-    FastClick.attach(document.body);
-
-    GameManager.init();
-    $(".btn-play").click(function() {
-        GameManager.startGame();
-    });
+$(function() {
+    XMing.GameStateManager.init();
 });
