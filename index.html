@@ -8,8 +8,7 @@
         Easter Bunnies
     </title>
     <meta name="description" content="Easter Bunny Game"/>
-    <meta name="keywords"
-          content="100% grid, layout, columns, images, thumbnails, responsive, full width grid, image grid, css, jquery, easter, bunny, bunnies, egg, eggs, game"/>
+    <meta name="keywords" content="easter, bunny, bunnies, egg, eggs, game"/>
     <meta name="author" content="xming13"/>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="css/app.css">
@@ -75,10 +74,30 @@
                         PLAY
                     </a>
                 </div>
+                <div class="button-holder">
+                    <a class="btn-leaderboard">
+                        LEADERBOARD
+                    </a>
+                </div>
             </div>
             <div class="panel-game">
-                <ul class="cbp-rfgrid clearfix">
+                <ul class="card-list clearfix">
                 </ul>
+            </div>
+            <div class="panel-leaderboard" style="display:none;">
+                <div class="scoreboard clearfix">
+                    <div class="icon-back-holder">
+                        <a class="icon-back" data-info="Back to home">
+                            Back to home
+                        </a>
+                    </div>
+                    <div class="heading">
+                        Leaderboard
+                    </div>
+                </div>
+                <div class="highscore-wrapper">
+                    <ul class="highscore-list"></ul>
+                </div>
             </div>
         </div>
     </div>

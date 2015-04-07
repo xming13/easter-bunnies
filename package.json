@@ -9,6 +9,7 @@
   "author": "Wei Seng",
   "license": "MIT",
   "devDependencies": {
+    "animate.css": "^3.2.5",
     "fastclick": "^1.0.6",
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.1",

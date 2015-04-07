@@ -91,13 +91,22 @@ XMing.GameStateManager = {
             self.startGame();
         });
 
+        $(".btn-leaderboard").click(function() {
+            self.showLeaderboard();
+        });
+
+        $(".icon-back").click(function() {
+            $(".panel-leaderboard").hide();
+            $(".panel-main").show();
+        });
+
         // preload images
         var image = new Image();
         image.src = 'images/back.png';
-        for (var i = 0; i < this.imageObjectList.length; i++) {
+        _.each(this.imageObjectList, function(imageObj) {
             image = new Image();
-            image.src = 'images/' + this.imageObjectList[i].imgName;
-        }
+            image.src = 'images/' + imageObj.imgName;
+        });
     },
     startGame: function() {
         var self = this;
@@ -107,19 +116,14 @@ XMing.GameStateManager = {
 
         this.numClick = 0;
 
-        var imgObjList = this.imageObjectList.shuffle();
-        var cardContainer = $("ul.cbp-rfgrid");
+        var cardContainer = $(".card-list");
         cardContainer.html("");
-        for (var i = 0; i < imgObjList.length; i++) {
-            var imgObj = imgObjList[i];
-            cardContainer.append(
-                this.cardHtmlTemplate
-                .replace("$dataNumber", imgObj.dataNumber)
-                .replace("$imgName", imgObj.imgName)
-            );
-        }
 
-        $("ul.cbp-rfgrid li").click(function() {
+        _.each(_.shuffle(this.imageObjectList), function(imgObj) {
+            cardContainer.append(self.cardHtmlTemplate.replace("$dataNumber", imgObj.dataNumber).replace("$imgName", imgObj.imgName));
+        });
+
+        $(".card-list li").click(function() {
             self.clickCard(this);
         });
 
@@ -130,7 +134,7 @@ XMing.GameStateManager = {
     clickCard: function(card) {
         var self = this;
 
-        var cardOpened = $(".cbp-rfgrid li.open")[0];
+        var cardOpened = $(".card-list li.open")[0];
         var cardClicked = $(card)[0];
 
         var $cardOpened = $(cardOpened);
@@ -200,39 +204,87 @@ XMing.GameStateManager = {
         if (this.gameState == this.gameStateEnum.GAME_NOT_STARTED) {
             this.gameState = this.gameStateEnum.GAME_IN_PROGRESS;
         }
-        if ($(".cbp-rfgrid li").length == $(".cbp-rfgrid li.reveal").length) {
+        if ($(".card-list li").length == $(".card-list li.reveal").length) {
             this.gameState = this.gameStateEnum.GAME_IS_FINISHED;
             this.showGameFinish();
         }
     },
     showGameFinish: function() {
         var self = this;
-        var text = "You took " + this.numClick + " clicks to match all the bunnies and eggs!";
         swal({
-            title: "Congratulations!",
-            text: text,
-            showCancelButton: true,
-            confirmButtonText: "Play again",
-            cancelButtonText: "cancel",
-            imageUrl: "images/base-bunny.png"
+            title: "Well Done!",
+            text: "You took " + self.numClick + " clicks to match all the bunnies and eggs!",
+            imageUrl: "images/base-bunny.png",
+            closeOnConfirm: false
         }, function() {
-            self.startGame();
+            swal({
+                title: "Thanks for playing!!!",
+                imageUrl: "images/love.png",
+                type: "input",
+                text: "Write your name here! It will appear in the leaderboard!",
+                closeOnConfirm: false
+            }, function(playerName) {
+                if (playerName === "") {
+                    swal.showInputError("You need to write something! A nickname is fine too!");
+                    return false;
+                }
+
+                $.ajax({
+                    method: "POST",
+                    url: 'http://weiseng.redairship.com/leaderboard/api/1/highscore.json',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        game_id: 2,
+                        username: playerName,
+                        score: self.numClick
+                    })
+                }).success(function(data) {
+                    swal({
+                        title: "Congratulations!",
+                        text: "You are currently ranked " + data.rank_text + "!",
+                        type: "success",
+                        showCancelButton: true,
+                        confirmButtonText: "Play again",
+                        cancelButtonText: "Back to home"
+                    }, function(isConfirm) {
+                        if (isConfirm) {
+                            self.startGame();
+                        } else {
+                            $(".panel-game").hide();
+                            $(".panel-main").show();
+                        }
+                    });
+                }).fail(function() {
+                    swal("Oops...", "Something went wrong!", "error");
+                });
+            });
+        });
+    },
+    showLeaderboard: function() {
+        $(".panel-main").hide();
+        $(".panel-leaderboard").show();
+
+        $(".highscore-list").html("");
+
+        $.get("http://weiseng.redairship.com/leaderboard/api/1/highscore.json?game_id=2", function(data) {
+            var numDummyData = 10 - data.length;
+            for (var i = 0; i < numDummyData; i++) {
+                data.push({
+                    username: '----------',
+                    score: '--'
+                });
+            }
+
+            _.each(data, function(highscore, index) {
+                setTimeout(function() {
+                    $(".highscore-list").append('<li class="animated slideInUp">' + (index + 1) + ': ' + highscore.username + ' - ' + highscore.score + '</li>');
+                }, index * 200);
+            });
+        }).fail(function() {
+            swal("Oops...", "Something went wrong!", "error");
         });
     }
 };
-
-Array.prototype.shuffle = function() {
-    var i = this.length,
-        j, temp;
-    if (i == 0) return this;
-    while (--i) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = this[i];
-        this[i] = this[j];
-        this[j] = temp;
-    }
-    return this;
-}
 
 $(function() {
     XMing.GameStateManager.init();
