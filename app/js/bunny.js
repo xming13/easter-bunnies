@@ -81,19 +81,27 @@ XMing.GameStateManager = new function() {
     }];
     var cardHtmlTemplate = '<li class="flip-container" data-number="$dataNumber">' + '<div class="flipper">' + '<div class="front">' + '<img src="images/back.png"/>' + '</div>' + '<div class="back">' + '<img src="images/$imgName" />' + '</div>' + '</div>' + '</li>';
     var isAnimating = false;
+
+    var VERSION_NUMBER = 1;
     var GAME_STATE_ENUM = {
         INITIAL: "initial",
         START: "start",
         END: "end"
     };
-    //    gameStateEnum: {
-    //        GAME_NOT_STARTED: 0,
-    //        GAME_IN_PROGRESS: 1,
-    //        GAME_IS_FINISHED: 2
-    //    },
+
     this.initGame = function() {
         var self = this;
+        gameState = GAME_STATE_ENUM.INITIAL;
+
         FastClick.attach(document.body);
+
+        this.preloadImage();
+
+        userData = this.loadData();
+
+        swal.setDefaults({
+            confirmButtonColor: '#3BD9F5'
+        });
 
         $(".btn-play").click(function() {
             self.startGame();
@@ -108,16 +116,11 @@ XMing.GameStateManager = new function() {
             $(".panel-main").show();
         });
 
-        // preload images
-        var image = new Image();
-        image.src = 'images/back.png';
-        _.each(imageObjectList, function(imageObj) {
-            image = new Image();
-            image.src = 'images/' + imageObj.imgName;
-        });
+        this.checkPlayedEasterEgg();
     };
     this.startGame = function() {
         var self = this;
+        gameState = GAME_STATE_ENUM.START;
 
         $(".panel-main").hide();
         $(".panel-game").show();
@@ -139,6 +142,15 @@ XMing.GameStateManager = new function() {
             scrollTop: $("#panel-container").offset().top
         }, 'fast');
     };
+
+    this.preloadImage = function() {
+        var image = new Image();
+        image.src = 'images/back.png';
+        _.each(imageObjectList, function(imageObj) {
+            image = new Image();
+            image.src = 'images/' + imageObj.imgName;
+        });
+    };
     this.clickCard = function(card) {
         var self = this;
 
@@ -149,7 +161,10 @@ XMing.GameStateManager = new function() {
         var $cardClicked = $(cardClicked);
 
         if (!$cardClicked.hasClass("reveal") && !isAnimating) {
-            this.updateGameState();
+            if ($(".card-list li").length == $(".card-list li.reveal").length) {
+                this.showGameFinish();
+            }
+
             if (cardOpened) {
                 if (cardOpened != cardClicked) {
                     numClick++;
@@ -159,7 +174,10 @@ XMing.GameStateManager = new function() {
                         $($cardOpened.find('.back')[0]).css('border', '5px solid #00ffff');
                         $cardClicked.removeClass('open').addClass('reveal');
                         $($cardClicked.find('.back')[0]).css('border', '5px solid #00ffff');
-                        this.updateGameState();
+
+                        if ($(".card-list li").length == $(".card-list li.reveal").length) {
+                            this.showGameFinish();
+                        }
                     } else {
                         this.flipCard($cardClicked);
                         $cardClicked.addClass('open');
@@ -208,17 +226,9 @@ XMing.GameStateManager = new function() {
             "transform": "rotateY(180deg) 0.5s"
         });
     };
-    this.updateGameState = function() {
-        if (gameState == GAME_STATE_ENUM.INITIAL) {
-            gameState = GAME_STATE_ENUM.START;
-        }
-        if ($(".card-list li").length == $(".card-list li.reveal").length) {
-            gameState = GAME_STATE_ENUM.END;
-            this.showGameFinish();
-        }
-    };
     this.showGameFinish = function() {
         var self = this;
+        gameState = GAME_STATE_ENUM.END;
         swal({
             title: "Well Done!",
             text: "You took " + numClick + " clicks to match all the bunnies and eggs!",
@@ -267,12 +277,23 @@ XMing.GameStateManager = new function() {
                 }
             });
         });
+
+        if (!userData.played.bunny) {
+            userData.played.bunny = true;
+            this.saveData(userData);
+        }
     };
     this.showLeaderboard = function() {
         $(".panel-main").hide();
         $(".panel-leaderboard").show();
 
         $(".highscore-list").html("");
+
+        if (!userData.leaderboard.bunny) {
+            userData.leaderboard.bunny = true;
+            this.saveData(userData);
+            this.checkLeaderboardEasterEgg();
+        }
 
         $.get("http://weiseng.redairship.com/leaderboard/api/1/highscore.json?game_id=2", function(data) {
             var numDummyData = 10 - data.length;
@@ -291,6 +312,91 @@ XMing.GameStateManager = new function() {
         }).fail(function() {
             swal("Oops...", "Something went wrong!", "error");
         });
+    };
+
+    // Easter Egg
+    this.checkPlayedEasterEgg = function() {
+        if (!userData.easterEgg.allPlayed) {
+            if (_.every(userData.played)) {
+                userData.easterEgg.allPlayed = true;
+                this.saveData(userData);
+                swal({
+                    title: 'Congratulations!',
+                    text: 'You have found the Blue Egg!',
+                    imageUrl: 'images/blue-egg.png'
+                });
+            }
+        }
+    };
+    this.checkLeaderboardEasterEgg = function() {
+        if (!userData.easterEgg.allLeaderboard) {
+            if (_.every(userData.leaderboard)) {
+                userData.easterEgg.allLeaderboard = true;
+                this.saveData(userData);
+                swal({
+                    title: 'Congratulations!',
+                    text: 'You have found the Ninja Egg!',
+                    imageUrl: 'images/ninja-egg.png'
+                });
+            }
+        }
+    };
+
+    // Local storage
+    this.saveData = function(userData) {
+        if (window.localStorage) {
+            window.localStorage.setItem('data', btoa(encodeURIComponent(JSON.stringify(userData))));
+        }
+    };
+    this.loadData = function() {
+        if (window.localStorage) {
+            var data = window.localStorage.getItem('data');
+            if (data) {
+                var parsedData = JSON.parse(decodeURIComponent(atob(data)));
+                // make sure version is the same
+                if (parsedData.version === VERSION_NUMBER) {
+                    return parsedData;
+                }
+            }
+        }
+        var data = {
+            played: {
+                bunny: false,
+                star: false,
+                specialOne: false,
+                mushrooms: false,
+                word: false,
+                numbers: false,
+                squirrel: false
+            },
+            leaderboard: {
+                bunny: false,
+                star: false,
+                specialOne: false,
+                mushrooms: false,
+                word: false,
+                numbers: false,
+                squirrel: false
+            },
+            squirrel: {
+                level: 0,
+                inHallOfFame: false
+            },
+            easterEgg: {
+                allGames: false,
+                allLeaderboard: false,
+                findTheWord: false,
+                followTheNumbers: false,
+                spotTheSpecialOne: false,
+                mushrooms: false,
+                squirrel: false
+            },
+            version: VERSION_NUMBER
+        };
+
+        this.saveData(data);
+
+        return data;
     };
 };
 
