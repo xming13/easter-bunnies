@@ -1,7 +1,12 @@
 var XMing = XMing || {};
 
-XMing.GameStateManager = {
-    imageObjectList: [{
+XMing.GameStateManager = new function() {
+
+    var gameState;
+    var userData;
+    var numClick = 0;
+
+    var imageObjectList = [{
         imgName: "white-bunny.png",
         dataNumber: 1
     }, {
@@ -73,17 +78,20 @@ XMing.GameStateManager = {
     }, {
         imgName: "ninja-egg.png",
         dataNumber: 12
-    }],
-    cardHtmlTemplate: '<li class="flip-container" data-number="$dataNumber">' + '<div class="flipper">' + '<div class="front">' + '<img src="images/back.png"/>' + '</div>' + '<div class="back">' + '<img src="images/$imgName" />' + '</div>' + '</div>' + '</li>',
-    isAnimating: false,
-    gameStateEnum: {
-        GAME_NOT_STARTED: 0,
-        GAME_IN_PROGRESS: 1,
-        GAME_IS_FINISHED: 2
-    },
-    gameState: 0,
-    numClick: 0,
-    init: function() {
+    }];
+    var cardHtmlTemplate = '<li class="flip-container" data-number="$dataNumber">' + '<div class="flipper">' + '<div class="front">' + '<img src="images/back.png"/>' + '</div>' + '<div class="back">' + '<img src="images/$imgName" />' + '</div>' + '</div>' + '</li>';
+    var isAnimating = false;
+    var GAME_STATE_ENUM = {
+        INITIAL: "initial",
+        START: "start",
+        END: "end"
+    };
+    //    gameStateEnum: {
+    //        GAME_NOT_STARTED: 0,
+    //        GAME_IN_PROGRESS: 1,
+    //        GAME_IS_FINISHED: 2
+    //    },
+    this.initGame = function() {
         var self = this;
         FastClick.attach(document.body);
 
@@ -103,24 +111,24 @@ XMing.GameStateManager = {
         // preload images
         var image = new Image();
         image.src = 'images/back.png';
-        _.each(this.imageObjectList, function(imageObj) {
+        _.each(imageObjectList, function(imageObj) {
             image = new Image();
             image.src = 'images/' + imageObj.imgName;
         });
-    },
-    startGame: function() {
+    };
+    this.startGame = function() {
         var self = this;
 
         $(".panel-main").hide();
         $(".panel-game").show();
 
-        this.numClick = 0;
+        numClick = 0;
 
         var cardContainer = $(".card-list");
         cardContainer.html("");
 
-        _.each(_.shuffle(this.imageObjectList), function(imgObj) {
-            cardContainer.append(self.cardHtmlTemplate.replace("$dataNumber", imgObj.dataNumber).replace("$imgName", imgObj.imgName));
+        _.each(_.shuffle(imageObjectList), function(imgObj) {
+            cardContainer.append(cardHtmlTemplate.replace("$dataNumber", imgObj.dataNumber).replace("$imgName", imgObj.imgName));
         });
 
         $(".card-list li").click(function() {
@@ -130,8 +138,8 @@ XMing.GameStateManager = {
         $('html, body').animate({
             scrollTop: $("#panel-container").offset().top
         }, 'fast');
-    },
-    clickCard: function(card) {
+    };
+    this.clickCard = function(card) {
         var self = this;
 
         var cardOpened = $(".card-list li.open")[0];
@@ -140,11 +148,11 @@ XMing.GameStateManager = {
         var $cardOpened = $(cardOpened);
         var $cardClicked = $(cardClicked);
 
-        if (!$cardClicked.hasClass("reveal") && !this.isAnimating) {
+        if (!$cardClicked.hasClass("reveal") && !isAnimating) {
             this.updateGameState();
             if (cardOpened) {
                 if (cardOpened != cardClicked) {
-                    this.numClick++;
+                    numClick++;
                     if ($cardOpened.data("number") == $cardClicked.data("number")) {
                         this.flipCard($cardClicked);
                         $cardOpened.removeClass('open').addClass('reveal');
@@ -155,24 +163,24 @@ XMing.GameStateManager = {
                     } else {
                         this.flipCard($cardClicked);
                         $cardClicked.addClass('open');
-                        this.isAnimating = true;
+                        isAnimating = true;
                         setTimeout(function() {
                             self.flipCard($cardClicked);
                             self.flipCard($cardOpened);
                             $cardClicked.removeClass('open');
                             $cardOpened.removeClass('open');
-                            self.isAnimating = false;
+                            isAnimating = false;
                         }, 500);
                     }
                 }
             } else {
-                this.numClick++;
+                numClick++;
                 this.flipCard($cardClicked);
                 $cardClicked.addClass('open');
             }
         }
-    },
-    flipCard: function(card) {
+    };
+    this.flipCard = function(card) {
         var cardSideShow, cardSideHide;
 
         if ($(card).hasClass('open')) {
@@ -199,21 +207,21 @@ XMing.GameStateManager = {
             "-ms-transform": "rotateY(180deg) 0.5s",
             "transform": "rotateY(180deg) 0.5s"
         });
-    },
-    updateGameState: function() {
-        if (this.gameState == this.gameStateEnum.GAME_NOT_STARTED) {
-            this.gameState = this.gameStateEnum.GAME_IN_PROGRESS;
+    };
+    this.updateGameState = function() {
+        if (gameState == GAME_STATE_ENUM.INITIAL) {
+            gameState = GAME_STATE_ENUM.START;
         }
         if ($(".card-list li").length == $(".card-list li.reveal").length) {
-            this.gameState = this.gameStateEnum.GAME_IS_FINISHED;
+            gameState = GAME_STATE_ENUM.END;
             this.showGameFinish();
         }
-    },
-    showGameFinish: function() {
+    };
+    this.showGameFinish = function() {
         var self = this;
         swal({
             title: "Well Done!",
-            text: "You took " + self.numClick + " clicks to match all the bunnies and eggs!",
+            text: "You took " + numClick + " clicks to match all the bunnies and eggs!",
             imageUrl: "images/base-bunny.png",
             closeOnConfirm: false
         }, function() {
@@ -235,7 +243,7 @@ XMing.GameStateManager = {
                         data: JSON.stringify({
                             game_id: 2,
                             username: playerName,
-                            score: self.numClick
+                            score: numClick
                         })
                     }).success(function(data) {
                         swal({
@@ -259,8 +267,8 @@ XMing.GameStateManager = {
                 }
             });
         });
-    },
-    showLeaderboard: function() {
+    };
+    this.showLeaderboard = function() {
         $(".panel-main").hide();
         $(".panel-leaderboard").show();
 
@@ -283,9 +291,9 @@ XMing.GameStateManager = {
         }).fail(function() {
             swal("Oops...", "Something went wrong!", "error");
         });
-    }
+    };
 };
 
 $(function() {
-    XMing.GameStateManager.init();
+    XMing.GameStateManager.initGame();
 });
