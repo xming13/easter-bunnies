@@ -203,7 +203,7 @@ body {
 }
 
 .panel-container {
-    padding: 5% 5%;
+    padding: 5%;
     text-align: center;
 }
 
@@ -280,7 +280,7 @@ body {
 
 .panel-leaderboard {
     position:relative;
-    width:60%;
+    width: 100%;
     margin:0 auto;
 }
 
@@ -379,6 +379,10 @@ body {
 @media only screen  and (min-width: 1224px) {
     #container {
         width: 70%;
+    }
+
+    .panel-leaderboard {
+        width: 60%;
     }
 }
 
