@@ -150,6 +150,9 @@ XMing.GameStateManager = new function() {
             image = new Image();
             image.src = 'images/' + imageObj.imgName;
         });
+
+        var imgLove = new Image();
+        imgLove.src = "images/love.png";
     };
     this.clickCard = function(card) {
         var self = this;
