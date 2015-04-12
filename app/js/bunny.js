@@ -336,6 +336,16 @@ XMing.GameStateManager = new function() {
                     text: 'You have found the Blue Egg!',
                     imageUrl: 'images/blue-egg.png'
                 });
+                $.ajax({
+                    method: "POST",
+                    url: 'http://weiseng.redairship.com/leaderboard/api/1/highscore.json',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        game_id: 13,
+                        username: userData.uid,
+                        score: 1
+                    })
+                });
             }
         }
     };
@@ -348,6 +358,16 @@ XMing.GameStateManager = new function() {
                     title: 'Congratulations!',
                     text: 'You have found the Ninja Egg!',
                     imageUrl: 'images/ninja-egg.png'
+                });
+                $.ajax({
+                    method: "POST",
+                    url: 'http://weiseng.redairship.com/leaderboard/api/1/highscore.json',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        game_id: 15,
+                        username: userData.uid,
+                        score: 1
+                    })
                 });
             }
         }
@@ -370,6 +390,13 @@ XMing.GameStateManager = new function() {
                 }
             }
         }
+
+        var uid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+
         var data = {
             played: {
                 bunny: false,
@@ -401,6 +428,7 @@ XMing.GameStateManager = new function() {
                 squirrel: false
             },
             collectAll: false,
+            uid: uid,
             version: VERSION_NUMBER
         };
 
