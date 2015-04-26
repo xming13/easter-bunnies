@@ -279,11 +279,14 @@ XMing.GameStateManager = new function() {
                                 $(".panel-main").show();
                             }
                         });
+                        userData.username = playerName;
+                        self.saveData(userData);
                     }).fail(function() {
                         swal("Oops...", "Something went wrong!", "error");
                     });
                 }
             });
+            $('.sweet-alert input[type=text]:first').val(userData.username);
         });
 
         if (!userData.played.bunny) {
@@ -429,6 +432,7 @@ XMing.GameStateManager = new function() {
             },
             collectAll: false,
             uid: uid,
+            username: '',
             version: VERSION_NUMBER
         };
 
