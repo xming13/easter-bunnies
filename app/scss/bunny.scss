@@ -26,10 +26,10 @@ html {
     font-size: 100%;
     padding: 0;
     margin: 0;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
 }
 
 body {
-    font-family: 'Lato', Calibri, Arial, sans-serif;
     background: #0099cc;
     color: #fff;
     padding: 0;
@@ -41,19 +41,18 @@ a {
     text-decoration: none;
 }
 
-#container {
-    width: 60%;
-}
-
 .main-content {
     background: #12BDFF;
     border-radius: 10px;
-    margin: 0 auto 30px;
 }
 
 .panel-container {
-    padding: 2%;
+    padding: 3%;
     text-align: center;
+}
+
+.panel-main {
+    margin-bottom: 10px;
 }
 
 .title {
@@ -98,6 +97,11 @@ a {
     background-color: #0249ee;
     border-color: #0249ee;
     outline: 0px none;
+}
+
+.panel-game {
+    width: 85%;
+    margin: 0 auto;
 }
 
 .card-list {
@@ -177,7 +181,7 @@ a {
 
 .panel-leaderboard {
     position:relative;
-    width: 100%;
+    width: 50%;
     margin:0 auto;
 }
 
@@ -220,10 +224,11 @@ a {
 .icon-back:after {
     content: attr(data-info);
     position: absolute;
-    top: 5px;
-    left: 40px;
+    top: -22px;
+    left: 0px;
     width: 95px;
-    text-align: right;
+    text-align: left;
+    font-size: 14px;
     font-weight: bold;
     color: #386BED;
     opacity: 0;
@@ -260,17 +265,18 @@ a {
     margin: 0;
     padding: 0;
     background: #6E9FFA;
-    min-height: 400px;
-}
+    min-height: 402px;
 
-.highscore-list li {
-    height: 40px;
-    border: 2px solid #1371A1;
-    background: #7EF0FF;
-    color: #050D45;
-    font-size: 20px;
-    line-height: 40px;
-    list-style: none;
+    li {
+        height: 42px;
+        margin-bottom: -2px;
+        border: 2px solid #1371A1;
+        background: #7EF0FF;
+        color: #050D45;
+        font-size: 20px;
+        line-height: 42px;
+        list-style: none;
+    }
 }
 
 .loader {
@@ -350,45 +356,49 @@ a {
     overflow: hidden !important;
 }
 
-@media only screen
-and (min-device-width: 320px)
-and (max-device-width: 540px) {
+/* Mobile Phones Portrait or Landscape */
+@media screen and (max-device-width: 640px) {
+    // override ming-games.css
     #container {
         width: 90%;
     }
 
-    .main-content {
+    .panel-game {
+        width: 100%;
+    }
+
+    .subtitle {
         margin: 0;
+    }
+
+    .card-list li {
+        // use 20% instead of 25% to cater for header and footer
+        width: 20%;
+        /* Fallback */
+        width: -webkit-calc(100% / 5);
+        width: calc(100% / 5);
     }
 
     .panel-leaderboard {
         width: 100%;
     }
 
+    .heading {
+        font-size: 25px;
+        line-height: 40px;
+    }
+
+    .scoreboard {
+        margin-bottom: 10px;
+    }
+
     .highscore-list {
-        min-height: 360px;
+        min-height: 302px;
 
         li {
-            height: 36px;
-            line-height: 36px;
+            height: 32px;
+            line-height: 32px;
+            font-size: 16px;
         }
-    }
-}
-
-@media only screen and (orientation: landscape) {
-    .card-list li {
-        width: 16.6666668%;
-        /* Fallback */
-        width: -webkit-calc(100% / 6);
-        width: calc(100% / 6);
-    }
-}
-
-@media only screen and (orientation: portrait) {
-    .card-list li {
-        width: 25%;
-        /* Fallback */
-        width: -webkit-calc(100% / 4);
-        width: calc(100% / 4);
     }
 }
