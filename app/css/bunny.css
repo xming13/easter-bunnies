@@ -293,6 +293,9 @@ a {
   overflow: hidden !important; }
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 540px) {
+  #container {
+    width: 90%; }
+
   .main-content {
     margin: 0; }
 
