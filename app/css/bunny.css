@@ -34,6 +34,9 @@ a {
   color: #f0f0f0;
   text-decoration: none; }
 
+#container {
+  width: 60%; }
+
 .main-content {
   background: #12BDFF;
   border-radius: 10px;
@@ -297,7 +300,10 @@ a {
     width: 100%; }
 
   .highscore-list {
-    min-height: 360px; } }
+    min-height: 360px; }
+    .highscore-list li {
+      height: 36px;
+      line-height: 36px; } }
 @media only screen and (orientation: landscape) {
   .card-list li {
     width: 16.6666668%;

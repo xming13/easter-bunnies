@@ -41,6 +41,10 @@ a {
     text-decoration: none;
 }
 
+#container {
+    width: 60%;
+}
+
 .main-content {
     background: #12BDFF;
     border-radius: 10px;
@@ -359,6 +363,11 @@ and (max-device-width: 540px) {
 
     .highscore-list {
         min-height: 360px;
+
+        li {
+            height: 36px;
+            line-height: 36px;
+        }
     }
 }
 
