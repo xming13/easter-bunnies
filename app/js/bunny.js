@@ -121,7 +121,7 @@ XMing.GameStateManager = new function() {
 
         $(".icon-back").click(function() {
             $(".panel-leaderboard").hide();
-            $(".panel-main").show();
+            $(".panel-main").fadeIn();
         });
 
         this.checkPlayedEasterEgg();
@@ -131,7 +131,7 @@ XMing.GameStateManager = new function() {
         gameState = GAME_STATE_ENUM.START;
 
         $(".panel-main").hide();
-        $(".panel-game").show();
+        $(".panel-game").fadeIn();
 
         numClick = 0;
 
@@ -284,7 +284,7 @@ XMing.GameStateManager = new function() {
                                 self.startGame();
                             } else {
                                 $(".panel-game").hide();
-                                $(".panel-main").show();
+                                $(".panel-main").fadeIn();
                             }
                         });
                         userData.username = playerName;
@@ -304,8 +304,7 @@ XMing.GameStateManager = new function() {
     };
     this.showLeaderboard = function() {
         $(".panel-main").hide();
-        $(".panel-leaderboard").show();
-        $(".loader").show();
+        $(".panel-leaderboard, .loader").fadeIn();
 
         $(".highscore-list").html("");
 
