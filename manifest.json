@@ -1,0 +1,13 @@
+{
+    "short_name": "easter_bunnies",
+    "name": "Easter Bunnies",
+    "icons": [
+        {
+            "src": "images/base-bunny.png",
+            "sizes": "100x100"
+        }
+    ],
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "orientation": "portrait"
+}
